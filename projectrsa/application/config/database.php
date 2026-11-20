@@ -48,14 +48,14 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'root';
-$db['default']['password'] = '';
-$db['default']['database'] = 'projectrsa';
-$db['default']['dbdriver'] = 'mysql';
+$db['default']['hostname'] = getenv('RSA_DB_HOST') ?: 'localhost';
+$db['default']['username'] = getenv('RSA_DB_USER') ?: 'root';
+$db['default']['password'] = getenv('RSA_DB_PASS') !== FALSE ? getenv('RSA_DB_PASS') : '';
+$db['default']['database'] = getenv('RSA_DB_NAME') ?: 'projectrsa';
+$db['default']['dbdriver'] = getenv('RSA_DB_DRIVER') ?: 'mysqli';
 $db['default']['dbprefix'] = '';
-$db['default']['pconnect'] = TRUE;
-$db['default']['db_debug'] = TRUE;
+$db['default']['pconnect'] = FALSE;
+$db['default']['db_debug'] = getenv('RSA_DB_DEBUG') === 'false' ? FALSE : TRUE;
 $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = '';
 $db['default']['char_set'] = 'utf8';

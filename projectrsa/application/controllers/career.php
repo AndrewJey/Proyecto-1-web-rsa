@@ -24,9 +24,10 @@ Class Career extends CI_CONTROLLER
         $user = $this->session->userdata('user');
         if(!$user) {
             redirect("login");
+            return;
         }
          $rows = $this->career->get_careers();
-         if (sizeof($rows) > 0) {
+         if (is_array($rows) && sizeof($rows) > 0) {
               $data = array('titulo' => 'Carreras',
                       'careers' => $rows);
          } else{
@@ -48,17 +49,19 @@ Class Career extends CI_CONTROLLER
  	//función para eliminar carreras
     public function delete_career()
     {
-        
+        $user = $this->session->userdata('user');
+        if (!$user) {
+            show_error('No autorizado', 401);
+            return;
+        }
         //comprobamos si es una petición ajax y existe la variable post id
         if($this->input->is_ajax_request() && $this->input->post('id'))
         {
-
-        	$id = $this->input->post('id');
-
-			$this->career->delete_career($id);
-
+            $id = (int) $this->input->post('id');
+            if ($id > 0) {
+                $this->career->delete_career($id);
+            }
         }
-
     }
  
  	//con esta función añadimos y editamos carreras dependiendo 

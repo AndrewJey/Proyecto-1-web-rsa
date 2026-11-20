@@ -17,13 +17,17 @@ class Inicio extends CI_Controller {
 		$user = $this->session->userdata('user');
         if(!$user) {
             redirect("login");
+            return;
         }
 		$tipo = array('tipo' => 'DashBoard',
 			'user_info' => $user);
 
 		$result = $this->user->load_visits();
-		foreach ($result as $inf) {
-			$info[] = $inf;
+		$info = array();
+		if (is_array($result) || $result instanceof Traversable) {
+			foreach ($result as $inf) {
+				$info[] = $inf;
+			}
 		}
 		$data = array(
 			'info' => $info
